@@ -1,10 +1,21 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view/>
+  <component :is="template">
+  </component>
 </template>
+
+<script lang="ts" setup>
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
+
+import BasicTemplate from '@/templates/BasicTemplate.vue'
+import LoginTemplate from '@/templates/LoginTemplate.vue'
+
+const route = useRoute()
+
+const template = computed(() => {
+  return route.meta.disabledAdterLogin ? LoginTemplate : BasicTemplate
+})
+</script>
 
 <style lang="scss">
 #app {
