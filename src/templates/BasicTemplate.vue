@@ -1,10 +1,13 @@
 <template>
-    <div class="d-flex bg-blue-darken-3 pa-3">
-        <template v-for="item in menuItems" :key="item.page">
-            <router-link class="text-white px-3 text-decoration-none" :to="item.page">
-                {{  item.name  }}
-            </router-link>
-        </template>
+    <div class="d-flex align-center justify-space-between bg-blue-darken-3 pa-3">
+        <div class="d-flex">
+            <template v-for="item in menuItems" :key="item.page">
+                <router-link class="text-white px-3 text-decoration-none" :to="item.page">
+                    {{  item.name  }}
+                </router-link>
+            </template>
+        </div>
+        <p class="text-white pointer" @click="logout"> Вийти </p>
     </div>
     <div>
         <router-view/>
@@ -12,21 +15,34 @@
 </template>
 
 <script lang="ts" setup>
+import router from '@/router';
+
 const menuItems = [{
-    name: 'Home',
+    name: 'Головна',
     page: '/',
 },
 {
-    name: 'Dating',
+    name: 'Знайомства',
     page: 'dating',
 }, {
-    name: 'OLX',
-    page: 'olx'
+    name: 'Барахолка',
+    page: 'seller'
 }, {
-    name: 'Professors',
-    page: 'professors'
+    name: 'Фахівці',
+    page: 'experts'
 },{
-    name: 'Help',
+    name: 'Соцмережі',
     page: 'help'
 }]
+
+const logout = () => {
+    localStorage.removeItem('crd')
+    router.push({ name: 'login' })
+}
 </script>
+
+<style>
+.pointer {
+    cursor: pointer;
+}
+</style>

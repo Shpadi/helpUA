@@ -14,7 +14,15 @@
         {{  element.lastname  }}
     </v-card-title>
 
+    <v-card-subtitle v-if="element.skills">
+        {{ element.skills }}
+    </v-card-subtitle>
+
     <v-card-actions>
+      <v-btn class="bg-green-darken-4 text-white">
+        Відгукнутися
+      </v-btn>
+
       <v-spacer></v-spacer>
 
       <v-btn
