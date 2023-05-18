@@ -1,6 +1,6 @@
 <template>
     <v-card
-    class="mx-3 my-3 w-25"
+    class="w-100"
     max-width="344"
   >
     <v-img
@@ -14,9 +14,24 @@
         {{  element.lastname  }}
     </v-card-title>
 
-    <v-card-subtitle class="pb-4">
-        {{  element.description  }}
-    </v-card-subtitle>
+    <v-card-actions>
+      <v-spacer></v-spacer>
+
+      <v-btn
+        :icon="show ? 'mdi-chevron-up' : 'mdi-chevron-down'"
+        @click="show = !show"
+      ></v-btn>
+    </v-card-actions>
+
+    <v-expand-transition>
+      <div v-show="show">
+        <v-divider></v-divider>
+
+        <v-card-text>
+            {{  element.description  }}
+        </v-card-text>
+      </div>
+    </v-expand-transition>
   </v-card>
 </template>
 

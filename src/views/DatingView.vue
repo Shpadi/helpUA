@@ -1,12 +1,21 @@
 <template>
-    <div class="d-flex">
-        <v-icon color="red" icon="mdi-vuetify"></v-icon>
+    <div class="d-flex justify-space-between">
+        <v-btn
+            class="ma-2 text-white"
+            icon="mdi-map"
+            color="blue-lighten-2"
+        ></v-btn>
+        <v-btn
+            class="ma-2 text-white"
+            icon="mdi-plus"
+            color="green-lighten-2"
+            @click="router.push({ name: 'dating-form' })"
+        ></v-btn>
     </div>
-    <v-btn @click="router.push({ name: 'dating-form' })">
-        Create Tindre account
-    </v-btn>
-    <div class="d-flex">
-        <BasicCard v-for="profile in datingProfiles" :key="profile.uuid" :element="profile" />
+    <div class="d-flex align-self-start pa-6 flex-wrap w-100">
+        <div class="w-25 my-3" v-for="profile in datingProfiles" :key="profile.uuid">
+            <BasicCard :element="profile" />
+        </div>
     </div>
 </template>
 

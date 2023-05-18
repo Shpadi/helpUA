@@ -32,10 +32,13 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 
 const store = useStore()
 
 const loading = ref(false)
+
+const router = useRouter()
 
 const profile = reactive({
     files: [],
@@ -46,5 +49,6 @@ const submitDating = async () => {
     loading.value = true
     await store.dispatch('dating/createDatingProfile', profile)
     loading.value = false
+    router.push({ name: 'dating' })
 }
 </script>

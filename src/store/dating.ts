@@ -18,24 +18,22 @@ const actions = {
             commit('setDatingsProfiles', data)
         })
     },
-    createDatingProfile({ rootState }: any, profile: any) {
+    async createDatingProfile({ rootState }: any, profile: any) {
         const { files, description } = profile
         const avatar = files[0]
-        const storageRef = ref(storage, avatar.name);
-        uploadBytes(storageRef, avatar).then((snapshot) => {
-            getDownloadURL(snapshot.ref).then(async (downloadURL) => {
-                const { firstname, lastname, uuid } = rootState.auth.currentUser
-                const datingProfile = {
-                    firstname,
-                    lastname,
-                    description,
-                    avatar: downloadURL,
-                    owner_id: uuid,
-                    uuid: uuidv4()
-                }
-                await setDoc(doc(db, 'dating', datingProfile.uuid), datingProfile);
-            });
-        });
+        const storageRef = ref(storage, avatar.name)
+        const snapshot = await uploadBytes(storageRef, avatar)
+        const downloadURL = await getDownloadURL(snapshot.ref)
+        const { firstname, lastname, uuid } = rootState.auth.currentUser
+        const datingProfile = {
+            firstname,
+            lastname,
+            description,
+            avatar: downloadURL,
+            owner_id: uuid,
+            uuid: uuidv4()
+        }
+        await setDoc(doc(db, 'dating', datingProfile.uuid), datingProfile);
     }
 }
 
