@@ -19,7 +19,7 @@
     </v-card-subtitle>
 
     <v-card-actions>
-      <v-btn class="bg-green-darken-4 text-white">
+      <v-btn class="bg-green-lighten-2 text-white">
         Відгукнутися
       </v-btn>
 

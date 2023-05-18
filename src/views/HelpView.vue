@@ -2,7 +2,7 @@
     <h2 class="ma-4">Соцмережі</h2>
     <div>
         <a v-for="country in countries" :key="country.name" target="_blank" :href="country.link">
-            <v-chip :key="country.name" class="ma-2 bg-blue-darken-4 text-white text-h5 pa-3">
+            <v-chip :key="country.name" class="ma-2 bg-blue-lighten-2 text-white text-h5 pa-3">
                 {{ country.name }}
             </v-chip>
         </a>
