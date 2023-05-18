@@ -1,8 +1,9 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import SignUp from '../views/SignUpView.vue'
 import SignIn from '../views/SignInView.vue'
-import Tinder from '../views/TinderView.vue'
-import TinderForm from '../views/Tinder/TinderForm.vue'
+import Dating from '../views/DatingView.vue'
+import Help from '../views/HelpView.vue'
+import DatingForm from '../views/Dating/DatingForm.vue'
 import HomeView from '@/views/HomeView.vue'
 
 const routes: Array<RouteRecordRaw> = [
@@ -25,15 +26,21 @@ const routes: Array<RouteRecordRaw> = [
     meta: { disabledAdterLogin: true }
   },
   {
-    path: '/tinder',
-    name: 'tinder',
-    component: Tinder,
+    path: '/dating',
+    name: 'dating',
+    component: Dating,
     meta: { requiresAuth: true }
   },
   {
-    path: '/tinder-new-profile',
-    name: 'tinder-form',
-    component: TinderForm,
+    path: '/dating-new-profile',
+    name: 'dating-form',
+    component: DatingForm,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/help',
+    name: 'help',
+    component: Help,
     meta: { requiresAuth: true }
   }
 ]
@@ -45,9 +52,9 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const user = localStorage.getItem('crd')
-  const apiKey = user ? JSON.parse(user).apiKey : null
-  if (to.meta.requiresAuth && !apiKey) next({ name: 'login' })
-  if (to.meta.disabledAdterLogin && apiKey) next({ name: 'home' })
+  const accessToken = user ? JSON.parse(user).stsTokenManager.accessToken : null
+  if (to.meta.requiresAuth && !accessToken) next({ name: 'login' })
+  if (to.meta.disabledAdterLogin && accessToken) next({ name: 'home' })
   next()
 })
 

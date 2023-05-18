@@ -4,16 +4,27 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
+import { useStore } from 'vuex'
 
 import BasicTemplate from '@/templates/BasicTemplate.vue'
 import LoginTemplate from '@/templates/LoginTemplate.vue'
 
 const route = useRoute()
 
+const store = useStore()
+
 const template = computed(() => {
   return route.meta.disabledAdterLogin ? LoginTemplate : BasicTemplate
+})
+
+onMounted(() => {
+  const user = localStorage.getItem('crd')
+  const uid = user ? JSON.parse(user).uid : ''
+  if (uid) {
+    store.dispatch('auth/fetchUser', uid)
+  }
 })
 </script>
 

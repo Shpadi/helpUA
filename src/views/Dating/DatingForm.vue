@@ -3,7 +3,7 @@
         <h2 class="mt-4"> Create your dating account </h2>
         <v-form class="pa-5">
             <v-file-input
-                v-model="files"
+                v-model="profile.files"
                 accept="image/png, image/jpeg"
                 placeholder="Pick an avatar"
                 prepend-icon="mdi-paperclip"
@@ -23,15 +23,28 @@
                 </template>
                 </template>
             </v-file-input>
-            <v-textarea v-model="description" variant="outlined" />
-            <v-btn class="bg-blue-darken-3">Submit</v-btn>
+            <v-textarea v-model="profile.description" variant="outlined" />
+            <v-btn class="bg-blue-darken-3" @click="submitDating" :loading="loading">Submit</v-btn>
         </v-form>
     </div>  
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { reactive, ref } from 'vue'
+import { useStore } from 'vuex'
 
-const files = ref()
-const description = ref('')
+const store = useStore()
+
+const loading = ref(false)
+
+const profile = reactive({
+    files: [],
+    description: ''
+})
+
+const submitDating = async () => {
+    loading.value = true
+    await store.dispatch('dating/createDatingProfile', profile)
+    loading.value = false
+}
 </script>

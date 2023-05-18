@@ -17,13 +17,16 @@ const menuItems = [{
     page: '/',
 },
 {
-    name: 'Tinder',
-    page: 'tinder',
+    name: 'Dating',
+    page: 'dating',
 }, {
     name: 'OLX',
     page: 'olx'
 }, {
     name: 'Professors',
     page: 'professors'
+},{
+    name: 'Help',
+    page: 'help'
 }]
 </script>
