@@ -1,10 +1,6 @@
 <template>
-    <div class="d-flex justify-space-between">
-        <v-btn
-            class="ma-2 text-white"
-            icon="mdi-map"
-            color="blue-lighten-2"
-        ></v-btn>
+    <div class="d-flex justify-space-between ma-2 pa-2">
+        <LocationSearch @search="searchFunction" :loading="loading" class="w-50" />
         <v-btn
             class="ma-2 text-white"
             icon="mdi-plus"
@@ -20,16 +16,25 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, computed } from 'vue';
+import { onMounted, computed, ref } from 'vue';
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import BasicCard from '@/components/BasicCard.vue';
+import LocationSearch from '@/components/LocationSearch.vue';
 
 const store = useStore()
 
 const router = useRouter()
 
+const loading = ref(false)
+
 const expertsList = computed(() => store.state.experts.experts)
+
+const searchFunction = async (positionData: any) => {
+    loading.value = true
+    await store.dispatch('experts/searchExperts', positionData)
+    loading.value = false
+}
 
 onMounted(() => {
     store.dispatch('experts/fetchExperts')

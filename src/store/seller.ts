@@ -1,5 +1,5 @@
 import { storage, db } from '@/firebase'
-import { setDoc, doc, collection, getDocs } from "firebase/firestore"
+import { setDoc, doc, collection, getDocs, query, where } from "firebase/firestore"
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 as uuidv4 } from 'uuid'
 
@@ -19,7 +19,7 @@ const actions = {
         })
     },
     async createSellerItem({ rootState }: any, profile: any) {
-        const { files, description } = profile
+        const { files, description, geoData } = profile
         const avatar = files[0]
         const storageRef = ref(storage, avatar.name)
         const snapshot = await uploadBytes(storageRef, avatar)
@@ -31,9 +31,19 @@ const actions = {
             description,
             avatar: downloadURL,
             owner_id: uuid,
+            geoData,
             uuid: uuidv4()
         }
         await setDoc(doc(db, 'seller', sellItem.uuid), sellItem);
+    },
+    async searchSellerItems({ commit }: any, geoData: any) {
+        const { countryCode, cityCode } = geoData
+        const searchQuery = query(sellerCollection, where('geoData.countryCode', '==',  countryCode), where('geoData.cityCode', '==',  cityCode))
+        const filteredShapshot = await getDocs(searchQuery)
+        const datingData = filteredShapshot.docs.map(async (doc) => await doc.data())
+        Promise.all(datingData).then((data) => {
+            commit('setSellItems', data)
+        })
     }
 }
 

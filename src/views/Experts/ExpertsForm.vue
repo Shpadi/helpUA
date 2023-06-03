@@ -23,7 +23,8 @@
                 </template>
                 </template>
             </v-file-input>
-            <v-text-field variant="outlined" label="skills" v-model="profile.skills" />
+            <LocationSelect v-model="profile.geoData"/>
+            <v-text-field variant="outlined" label="Skills" v-model="profile.skills" />
             <v-textarea v-model="profile.description" variant="outlined" />
             <v-btn class="bg-blue-darken-3" @click="submitDating" :loading="loading">Submit</v-btn>
         </v-form>
@@ -34,6 +35,7 @@
 import { reactive, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
+import LocationSelect from '@/components/LocationSelect.vue';
 
 const store = useStore()
 
@@ -44,7 +46,11 @@ const router = useRouter()
 const profile = reactive({
     files: [],
     description: '',
-    skills: ''
+    skills: '',
+    geoData: {
+        countryCode: '',
+        cityCode: '',
+    }
 })
 
 const submitDating = async () => {
