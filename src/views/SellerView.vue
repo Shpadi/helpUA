@@ -10,7 +10,7 @@
     </div>
     <div class="d-flex align-self-start pa-6 flex-wrap w-100">
         <div class="w-25 my-3" v-for="profile in sellItems" :key="profile.uuid">
-            <BasicCard :element="profile" />
+            <BasicCard :element="profile" @respond="respondToSeller" />
         </div>
     </div>
 </template>
@@ -30,10 +30,21 @@ const sellItems = computed(() => store.state.seller.sellItems)
 
 const loading = ref(false)
 
+const user = computed(() => store.state.auth.currentUser)
+
 const searchFunction = async (positionData: any) => {
     loading.value = true
     await store.dispatch('seller/searchSellerItems', positionData)
     loading.value = false
+}
+
+const respondToSeller = (element: any) => {
+    const respond = {
+        user: user.value,
+        item: { ...element },
+        type: 'seller'
+    }
+    store.dispatch('responds/createRespond', respond)
 }
 
 onMounted(() => {

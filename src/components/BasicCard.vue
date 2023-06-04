@@ -19,7 +19,7 @@
     </v-card-subtitle>
 
     <v-card-actions>
-      <v-btn class="bg-green-lighten-2 text-white">
+      <v-btn class="bg-green-lighten-2 text-white" @click="emits('respond', element)">
         Відгукнутися
       </v-btn>
 
@@ -44,11 +44,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineProps } from 'vue'
+import { ref, defineProps, defineEmits, computed } from 'vue'
+import { useStore } from 'vuex'
 
-defineProps<{
+const props = defineProps<{
     element: any
 }>()
 
+const emits = defineEmits(['respond'])
+
 const show = ref(false)
+
+const store = useStore()
+
+const user = computed(() => store.state.auth.currentUser)
+
+const isMe = computed(() => user.value.uuid === props.element.owner_id)
 </script>

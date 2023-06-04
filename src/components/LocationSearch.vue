@@ -8,7 +8,7 @@
             item-value="countryCode"
             label="Select Country"
             @update:model-value="getCities"
-            class="ma-2"
+            class="ma-2 rounded-lg"
         >
         </v-autocomplete>
         <v-autocomplete
@@ -19,7 +19,7 @@
             item-value="adminCode1"
             label="Select City"
             :disabled="!geoPosition.countryCode"
-            class="ma-2"
+            class="ma-2 rounded-lg"
         >
         </v-autocomplete>
         <v-btn class="bg-blue-darken-3 mb-5" @click="search" :loading="loading">Submit</v-btn>

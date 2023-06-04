@@ -8,6 +8,7 @@ import SellerForm from '../views/Seller/SellerForm.vue'
 import Experts from '../views/ExpertsView.vue'
 import ExpertsForm from '../views/Experts/ExpertsForm.vue'
 import Help from '../views/HelpView.vue'
+import Profile from '../views/ProfileView.vue'
 import HomeView from '@/views/HomeView.vue'
 
 const routes: Array<RouteRecordRaw> = [
@@ -69,6 +70,12 @@ const routes: Array<RouteRecordRaw> = [
     path: '/help',
     name: 'help',
     component: Help,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: Profile,
     meta: { requiresAuth: true }
   }
 ]

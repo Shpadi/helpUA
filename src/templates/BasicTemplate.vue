@@ -7,7 +7,14 @@
                 </router-link>
             </template>
         </div>
-        <p class="text-white pointer text-h6" @click="logout"> Вийти </p>
+        <div class="d-flex align-center">
+            <v-btn
+                class="ma-2"
+                icon="account-circle"
+                @click="router.push({ name: 'profile' })"
+            ></v-btn>
+            <p class="text-white pointer text-h6" @click="logout"> Вийти </p>
+        </div>
     </div>
     <div>
         <router-view/>

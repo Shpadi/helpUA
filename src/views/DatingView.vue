@@ -10,7 +10,7 @@
     </div>
     <div class="d-flex align-self-start pa-6 flex-wrap w-100">
         <div class="w-25 my-3" v-for="profile in datingProfiles" :key="profile.uuid">
-            <BasicCard :element="profile" />
+            <BasicCard :element="profile" @respond="respondToDating" />
         </div>
     </div>
 </template>
@@ -30,10 +30,21 @@ const datingProfiles = computed(() => store.state.dating.datingsProfiles)
 
 const loading = ref(false)
 
+const user = computed(() => store.state.auth.currentUser)
+
 const searchFunction = (positionData: any) => {
     loading.value = true
     store.dispatch('dating/searchDatingProfiles', positionData)
     loading.value = true
+}
+
+const respondToDating = (element: any) => {
+    const respond = {
+        user: user.value,
+        item: { ...element },
+        type: 'dating'
+    }
+    store.dispatch('responds/createRespond', respond)
 }
 
 onMounted(() => {
