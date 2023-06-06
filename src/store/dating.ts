@@ -19,7 +19,7 @@ const actions = {
         })
     },
     async createDatingProfile({ rootState }: any, profile: any) {
-        const { files, description, geoData } = profile
+        const { files, description, geoData, interests } = profile
         const avatar = files[0]
         const storageRef = ref(storage, avatar.name)
         const snapshot = await uploadBytes(storageRef, avatar)
@@ -32,13 +32,24 @@ const actions = {
             avatar: downloadURL,
             owner_id: uuid,
             geoData,
+            interests,
             uuid: uuidv4()
         }
         await setDoc(doc(db, 'dating', datingProfile.uuid), datingProfile);
     },
-    async searchDatingProfiles({ commit }: any, geoData: any) {
+    async searchDatingProfiles({ commit }: any, payload: any) {
+        const { geoData, interests } = payload
         const { countryCode, cityCode } = geoData
-        const searchQuery = query(datingCollection, where('geoData.countryCode', '==',  countryCode), where('geoData.cityCode', '==',  cityCode))
+        let searchQuery = query(datingCollection)
+        if (countryCode) {
+            searchQuery = query(searchQuery, where('geoData.countryCode', '==', countryCode))
+        }
+        if (cityCode) {
+            searchQuery = query(searchQuery, where('geoData.cityCode', '==', cityCode))
+        }
+        if (interests.length > 0) {
+            searchQuery = query(searchQuery, where('interests', 'array-contains-any', interests))
+        }
         const filteredShapshot = await getDocs(searchQuery)
         const datingData = filteredShapshot.docs.map(async (doc) => await doc.data())
         Promise.all(datingData).then((data) => {
@@ -54,8 +65,8 @@ const mutations = {
 }
 
 export default {
-  namespaced: true,
-  state,
-  actions,
-  mutations,
+    namespaced: true,
+    state,
+    actions,
+    mutations,
 }

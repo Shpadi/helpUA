@@ -15,11 +15,15 @@
     </v-card-title>
 
     <v-card-subtitle v-if="element.skills">
-        {{ element.skills }}
+        {{ element.skills.join(', ') }}
+    </v-card-subtitle>
+
+    <v-card-subtitle v-if="element.interests">
+        {{ element.interests.join(', ') }}
     </v-card-subtitle>
 
     <v-card-actions>
-      <v-btn class="bg-green-lighten-2 text-white" @click="emits('respond', element)">
+      <v-btn :disabled="!showButton" class="bg-green-lighten-2 text-white" @click="sendRespond">
         Відгукнутися
       </v-btn>
 
@@ -54,10 +58,16 @@ const props = defineProps<{
 const emits = defineEmits(['respond'])
 
 const show = ref(false)
+const showButton = ref(true)
 
 const store = useStore()
 
 const user = computed(() => store.state.auth.currentUser)
 
 const isMe = computed(() => user.value.uuid === props.element.owner_id)
+
+const sendRespond = () => {
+  emits('respond', props.element)
+  showButton.value = false
+}
 </script>

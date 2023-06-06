@@ -24,7 +24,14 @@
                 </template>
             </v-file-input>
             <LocationSelect v-model="profile.geoData"/>
-            <v-text-field variant="outlined" label="Skills" v-model="profile.skills" />
+            <v-autocomplete
+                variant="outlined"
+                v-model="profile.skills"
+                :items="skillsList"
+                label="Select Skills"
+                multiple
+                class="rounded-lg"
+            />
             <v-textarea v-model="profile.description" variant="outlined" />
             <v-btn class="bg-blue-darken-3" @click="submitDating" :loading="loading">Submit</v-btn>
         </v-form>
@@ -46,7 +53,7 @@ const router = useRouter()
 const profile = reactive({
     files: [],
     description: '',
-    skills: '',
+    skills: [],
     geoData: {
         countryCode: '',
         cityCode: '',
@@ -59,4 +66,29 @@ const submitDating = async () => {
     loading.value = false
     router.push({ name: 'experts' })
 }
+
+const skillsList = ['Будівництво',
+'Бьюті індустрія',
+'Ветеринар',
+'Виховання дітей',
+'Водій',
+'Дитячий лікар',
+'Дизайнер',
+'Косметологія',
+'Кухар',
+'Лікар',
+'Маркетинг',
+'Майстер манікюру/педікюру',
+'Масаж',
+'Нотаріус',
+'Охорона',
+'Офіціант',
+'Програмування',
+'Психологія',
+'Ремонт будівель',
+'Ремонт одягу/взуття',
+'Фітнес тренер',
+'Юрист',
+'SMM',
+'Інше…']
 </script>

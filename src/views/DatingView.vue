@@ -1,6 +1,16 @@
 <template>
     <div class="d-flex justify-space-between ma-2 pa-2">
-        <LocationSearch @search="searchFunction" :loading="loading" class="w-50" />
+        <div class="d-flex align-center w-75">
+            <v-autocomplete
+                variant="outlined"
+                v-model="interests"
+                :items="interestsList"
+                label="Select Interest"
+                multiple
+                class="rounded-lg"
+            />
+            <LocationSearch @search="searchFunction" :loading="loading" class="w-75" />
+        </div>
         <v-btn
             class="ma-2 text-white"
             icon="mdi-plus"
@@ -30,12 +40,15 @@ const datingProfiles = computed(() => store.state.dating.datingsProfiles)
 
 const loading = ref(false)
 
+const interests = ref([])
+
 const user = computed(() => store.state.auth.currentUser)
 
 const searchFunction = (positionData: any) => {
     loading.value = true
-    store.dispatch('dating/searchDatingProfiles', positionData)
-    loading.value = true
+    const payload = { geoData: positionData, interests: interests.value }
+    store.dispatch('dating/searchDatingProfiles', payload)
+    loading.value = false
 }
 
 const respondToDating = (element: any) => {
@@ -50,4 +63,26 @@ const respondToDating = (element: any) => {
 onMounted(() => {
     store.dispatch('dating/fetchDatingProfiles')
 })
+
+const interestsList = [
+    'Фотографія',
+'Спорт',
+'Подорожі',
+'Кулінарія',
+'Музика',
+'Читання',
+'Живопис',
+'Танці',
+'Рукоділля',
+'Гра на музичних інструментах',
+'Театр',
+'Комп ютерні ігри',
+'Садівництво',
+'Волонтерство',
+'Гірськолижний спорт',
+'Мови та культури',
+'Риболовля',
+'Велоспорт',
+'Астрономія',
+] 
 </script>

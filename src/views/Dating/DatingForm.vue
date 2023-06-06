@@ -23,6 +23,14 @@
                 </template>
                 </template>
             </v-file-input>
+            <v-autocomplete
+                variant="outlined"
+                v-model="profile.interests"
+                :items="interestsList"
+                label="Select Interest"
+                multiple
+                class="rounded-lg"
+            />
             <LocationSelect v-model="profile.geoData"/>
             <v-textarea v-model="profile.description" variant="outlined" />
             <v-btn class="bg-blue-darken-3" @click="submitDating" :loading="loading">Submit</v-btn>
@@ -45,6 +53,7 @@ const router = useRouter()
 const profile = reactive({
     files: [],
     description: '',
+    interests: [],
     geoData: {
         countryCode: '',
         cityCode: '',
@@ -57,4 +66,26 @@ const submitDating = async () => {
     loading.value = false
     router.push({ name: 'dating' })
 }
+
+const interestsList = [
+    'Фотографія',
+'Спорт',
+'Подорожі',
+'Кулінарія',
+'Музика',
+'Читання',
+'Живопис',
+'Танці',
+'Рукоділля',
+'Гра на музичних інструментах',
+'Театр',
+'Комп ютерні ігри',
+'Садівництво',
+'Волонтерство',
+'Гірськолижний спорт',
+'Мови та культури',
+'Риболовля',
+'Велоспорт',
+'Астрономія',
+] 
 </script>

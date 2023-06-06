@@ -10,7 +10,7 @@
         <div class="d-flex align-center">
             <v-btn
                 class="ma-2"
-                icon="account-circle"
+                icon="mdi-account-circle"
                 @click="router.push({ name: 'profile' })"
             ></v-btn>
             <p class="text-white pointer text-h6" @click="logout"> Вийти </p>
@@ -29,7 +29,7 @@ const menuItems = [{
     page: '/',
 },
 {
-    name: 'Знайомства',
+    name: 'Друзі',
     page: 'dating',
 }, {
     name: 'Барахолка',

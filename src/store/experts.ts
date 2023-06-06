@@ -37,9 +37,19 @@ const actions = {
         }
         await setDoc(doc(db, 'experts', expert.uuid), expert);
     },
-    async searchExperts({ commit }: any, geoData: any) {
+    async searchExperts({ commit }: any, payload: any) {
+        const { geoData, skills } = payload
         const { countryCode, cityCode } = geoData
-        const searchQuery = query(expertsCollection, where('geoData.countryCode', '==',  countryCode), where('geoData.cityCode', '==',  cityCode))
+        let searchQuery = query(expertsCollection)
+        if (countryCode) {
+            searchQuery = query(searchQuery, where('geoData.countryCode', '==', countryCode))
+        }
+        if (cityCode) {
+            searchQuery = query(searchQuery, where('geoData.cityCode', '==', cityCode))
+        }
+        if (skills.length > 0) {
+            searchQuery = query(searchQuery, where('skills', 'array-contains-any', skills))
+        }
         const filteredShapshot = await getDocs(searchQuery)
         const datingData = filteredShapshot.docs.map(async (doc) => await doc.data())
         Promise.all(datingData).then((data) => {
@@ -55,8 +65,8 @@ const mutations = {
 }
 
 export default {
-  namespaced: true,
-  state,
-  actions,
-  mutations,
+    namespaced: true,
+    state,
+    actions,
+    mutations,
 }

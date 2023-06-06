@@ -1,6 +1,16 @@
 <template>
     <div class="d-flex justify-space-between ma-2 pa-2">
-        <LocationSearch @search="searchFunction" :loading="loading" class="w-50" />
+        <div class="d-flex align-center w-75">
+            <v-autocomplete
+                variant="outlined"
+                v-model="skills"
+                :items="skillsList"
+                label="Select Skills"
+                multiple
+                class="rounded-lg"
+            />
+            <LocationSearch @search="searchFunction" :loading="loading" class="w-75" />
+        </div>
         <v-btn
             class="ma-2 text-white"
             icon="mdi-plus"
@@ -28,13 +38,16 @@ const router = useRouter()
 
 const loading = ref(false)
 
+const skills = ref([])
+
 const expertsList = computed(() => store.state.experts.experts)
 
 const user = computed(() => store.state.auth.currentUser)
 
 const searchFunction = async (positionData: any) => {
     loading.value = true
-    await store.dispatch('experts/searchExperts', positionData)
+    const payload = { geoData: positionData, skills: skills.value}
+    await store.dispatch('experts/searchExperts', payload)
     loading.value = false
 }
 
@@ -50,4 +63,29 @@ const respondToExpert = (element: any) => {
 onMounted(() => {
     store.dispatch('experts/fetchExperts')
 })
+
+const skillsList = ['Будівництво',
+'Бьюті індустрія',
+'Ветеринар',
+'Виховання дітей',
+'Водій',
+'Дитячий лікар',
+'Дизайнер',
+'Косметологія',
+'Кухар',
+'Лікар',
+'Маркетинг',
+'Майстер манікюру/педікюру',
+'Масаж',
+'Нотаріус',
+'Охорона',
+'Офіціант',
+'Програмування',
+'Психологія',
+'Ремонт будівель',
+'Ремонт одягу/взуття',
+'Фітнес тренер',
+'Юрист',
+'SMM',
+'Інше…']
 </script>

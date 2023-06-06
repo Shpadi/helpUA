@@ -1,6 +1,15 @@
 <template>
     <div class="d-flex justify-space-between ma-2 pa-2">
-        <LocationSearch @search="searchFunction" :loading="loading" class="w-50" />
+        <div class="d-flex align-center w-75">
+            <v-autocomplete
+                variant="outlined"
+                v-model="type"
+                :items="typesList"
+                label="Select Type"
+                class="rounded-lg"
+            />
+            <LocationSearch @search="searchFunction" :loading="loading" class="w-75" />
+        </div>
         <v-btn
             class="ma-2 text-white"
             icon="mdi-plus"
@@ -30,11 +39,14 @@ const sellItems = computed(() => store.state.seller.sellItems)
 
 const loading = ref(false)
 
+const type = ref('')
+
 const user = computed(() => store.state.auth.currentUser)
 
 const searchFunction = async (positionData: any) => {
     loading.value = true
-    await store.dispatch('seller/searchSellerItems', positionData)
+    const payload = { geoData: positionData, type: type.value  }
+    await store.dispatch('seller/searchSellerItems', payload)
     loading.value = false
 }
 
@@ -50,4 +62,20 @@ const respondToSeller = (element: any) => {
 onMounted(() => {
     store.dispatch('seller/fetchSellItems')
 })
+
+const typesList = [
+    'Авто',
+'Дім та сад',
+'Дитячі речі',
+'Електроніка', 
+'Запчастини для транспорту',
+'Кухня',
+'Одяг',
+'Спортивні товари',
+'Товари для дому',
+'Товари для тварин',
+'Мебель',
+'Нерухомість', 
+'ВІДДАМ БЕЗКОШТОВНО'
+]
 </script>

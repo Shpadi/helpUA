@@ -19,7 +19,7 @@ const actions = {
         })
     },
     async createSellerItem({ rootState }: any, profile: any) {
-        const { files, description, geoData } = profile
+        const { files, description, geoData, type } = profile
         const avatar = files[0]
         const storageRef = ref(storage, avatar.name)
         const snapshot = await uploadBytes(storageRef, avatar)
@@ -32,13 +32,24 @@ const actions = {
             avatar: downloadURL,
             owner_id: uuid,
             geoData,
+            type,
             uuid: uuidv4()
         }
         await setDoc(doc(db, 'seller', sellItem.uuid), sellItem);
     },
-    async searchSellerItems({ commit }: any, geoData: any) {
+    async searchSellerItems({ commit }: any, paylod: any) {
+        const { geoData, type } = paylod
         const { countryCode, cityCode } = geoData
-        const searchQuery = query(sellerCollection, where('geoData.countryCode', '==',  countryCode), where('geoData.cityCode', '==',  cityCode))
+        let searchQuery = query(sellerCollection)
+        if (type) {
+            searchQuery = query(searchQuery, where('type', '==', type))
+        }
+        if (countryCode) {
+            searchQuery = query(searchQuery, where('geoData.countryCode', '==', countryCode))
+        }
+        if (cityCode) {
+            searchQuery = query(searchQuery, where('geoData.cityCode', '==', cityCode))
+        }
         const filteredShapshot = await getDocs(searchQuery)
         const datingData = filteredShapshot.docs.map(async (doc) => await doc.data())
         Promise.all(datingData).then((data) => {
@@ -54,8 +65,8 @@ const mutations = {
 }
 
 export default {
-  namespaced: true,
-  state,
-  actions,
-  mutations,
+    namespaced: true,
+    state,
+    actions,
+    mutations,
 }
