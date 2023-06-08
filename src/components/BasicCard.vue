@@ -4,6 +4,7 @@
     max-width="344"
   >
     <v-img
+      v-if="isImagesEnabled"
       :src="element.avatar"
       width="auto"
       height="200"
@@ -65,6 +66,14 @@ const store = useStore()
 const user = computed(() => store.state.auth.currentUser)
 
 const isMe = computed(() => user.value.uuid === props.element.owner_id)
+
+const isImagesEnabled = computed(() => {
+    const isImagesEnabled = localStorage.getItem('isImagesEnabled')
+    if (isImagesEnabled) {
+        return JSON.parse(isImagesEnabled)
+    }
+    return true
+})
 
 const sendRespond = () => {
   emits('respond', props.element)

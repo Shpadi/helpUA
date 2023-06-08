@@ -13,6 +13,11 @@
                 icon="mdi-account-circle"
                 @click="router.push({ name: 'profile' })"
             ></v-btn>
+            <v-btn
+                class="ma-2"
+                :icon="isImagesEnabled ? 'mdi-image-check-outline' : 'mdi-image-broken'"
+                @click="setImageStatus"
+            ></v-btn>
             <p class="text-white pointer text-h6" @click="logout"> Вийти </p>
         </div>
     </div>
@@ -22,7 +27,11 @@
 </template>
 
 <script lang="ts" setup>
+import { computed } from 'vue'
 import router from '@/router';
+import { useStore } from 'vuex'
+
+const store = useStore()
 
 const menuItems = [{
     name: 'Головна',
@@ -45,6 +54,13 @@ const menuItems = [{
 const logout = () => {
     localStorage.removeItem('crd')
     router.push({ name: 'login' })
+}
+
+const isImagesEnabled = computed(() => store.getters['auth/isImagesStatusEnabled'])
+
+const setImageStatus = () => {
+    localStorage.setItem('isImagesEnabled', String(!isImagesEnabled.value))
+    store.commit('auth/setImagesStatus', !isImagesEnabled.value)
 }
 </script>
 

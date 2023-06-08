@@ -9,7 +9,8 @@ const usersCollection = collection(db, 'users')
 
 const state = {
     currentUser: null,
-    loginError: null
+    loginError: null,
+    isImagesEnabled: localStorage.getItem('isImagesEnabled')
 }
 
 type SignUpUser = {
@@ -74,6 +75,20 @@ const mutations = {
     },
     setLoginError(state: any, error: string) {
         state.loginError = error
+    },
+    setImagesStatus(state: any, status: boolean) {
+        console.log('dddd', status)
+        localStorage.setItem('isImagesEnabled', String(status))
+        state.isImagesEnabled = status
+    }
+}
+
+const getters = {
+    isImagesStatusEnabled(state: any) {
+        if (state.isImagesEnabled) {
+            return JSON.parse(state.isImagesEnabled)
+        }
+        return true
     }
 }
 
@@ -82,4 +97,5 @@ export default {
   state,
   actions,
   mutations,
+  getters,
 }
